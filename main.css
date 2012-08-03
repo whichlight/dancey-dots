@@ -1,0 +1,11 @@
+#container{
+	font-family:helvetica;	
+	margin: 0px auto;
+	width:650px;
+}
+
+.mouse{
+	height=10px;
+	width=10px;
+	background-color:pink;
+}

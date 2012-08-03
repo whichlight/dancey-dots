@@ -1,0 +1,14 @@
+{
+  "name": "synth_fun",
+  "subdomain": "whichlight.synth_fun",
+  "scripts": {
+    "start": "server.js"
+  },
+  "version": "0.0.0-9",
+  "engines": {
+    "node": "0.6.x"
+  },
+  "dependencies": {
+    "socket.io": "0.9.x"
+  }
+}

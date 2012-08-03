@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<!-- paulirish.com/2008/conditional-stylesheets-vs-css-hacks-answer-neither/ -->
+<!-- Consider specifying the language of your content by adding the `lang` attribute to <html> -->
+<!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>    <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+<head>
+<!--
+hey all! i made this as a prototype thinking of collective instruments and
+real time web interactivity.
+
+A couple days ago I started playing with the web audio api, so this is 
+pretty minimal.  I'm putting this out to see how people feel playing with it,
+and how it fares scaling up.  It was built with socketio and node.
+
+let me know what you think tweet me at @kawantum , or whichlight at gmail dot com
+
+see other projects at http://whichlight.com/  
+
+-->
+
+    <meta charset="utf-8">
+
+    <title>dancey-dots</title>
+    <meta name="description" content="">
+    <!-- Mobile viewport optimized: h5bp.com/viewport -->
+    <meta name="viewport" content="width=device-width">
+	<style type="text/css">
+		#container{
+			font-family:helvetica;	
+			margin: 0px auto;
+			width:650px;
+		}
+
+		.synth{
+			background-color:pink;
+    position: absolute;
+     height: 40px;
+    min-width: 40px;
+	border-radius:20px;
+	}
+	#info{
+	position: absolute;
+	    right: 10px;
+	    bottom: 10px;
+	    z-index: 2;
+	    padding: 16px 24px;
+	  color:grey;
+	  font-size:15px;
+	  font-family: helvetica;	
+
+	}
+	</style>
+
+<script type="text/javascript">
+
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-33819772-1']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+
+</script>
+
+
+</head>
+<body>
+
+
+
+<div id="info">dancey-dots by <a href="http://www.whichlight.com">whichlight</a></div>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+    
+    <script src="main.js"></script>
+    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+</body>
+
+</html>
