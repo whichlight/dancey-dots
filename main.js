@@ -24,7 +24,7 @@ $(document).ready(function() {
     $(document).mouseup(function(){
         //oscillator.noteOff(0);
         //prepSynths();
-        pressed=false;
+        pressed = false;
         socket.emit('silent',{state:"stop"});
     });
 
@@ -63,9 +63,9 @@ $(document).ready(function() {
         });
 
         if(!synths[data.id]){
-            synths[data.id]=prepSynths();
+            synths[data.id] = prepSynths();
         }
-        var n = synthmap(data.x,data.y);
+        var n = synthmap(data.x, data.y);
         _x = n[0];
         _y = n[1];
         if(synths[data.id]){
@@ -77,25 +77,22 @@ $(document).ready(function() {
         }
     });
 
-    function sendMousePosition(mp) {
-        //if mouse is pressed, emit
-        var now = (new Date()).getTime();
-        if(pressed && (now-time>40)){
+    var sendMousePosition = _.throttle(function(mp){
+        if(pressed){
             socket.emit('move', {
                 x: mp.pageX,
                 y: mp.pageY,
                 w: $(window).width(),
                 h: $(window).height()
 			});
-            time= (new Date()).getTime();
         }
         return true;
-    }
+    }, 40);
 
     function prepSynths(){
         var oscillator = context.createOscillator(); //need perens here
-        oscillator.type=1;
-        oscillator.frequency.value=_x;
+        oscillator.type = 1;
+        oscillator.frequency.value = _x;
 
         //filter
         var filter = context.createBiquadFilter();
@@ -104,7 +101,7 @@ $(document).ready(function() {
 
         //volume
         var gainNode = context.createGainNode();
-        gainNode.gain.value=0.05;
+        gainNode.gain.value = 0.05;
 
         //connect it all
         oscillator.connect(filter);
