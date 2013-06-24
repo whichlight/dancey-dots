@@ -7,7 +7,6 @@ $(document).ready(function() {
         alert("this uses the web audio API, try opening it in google chrome \n\n <3 whichlight" );
     }
 
-    var col;
     var synths = {};
     var pressed;
 
