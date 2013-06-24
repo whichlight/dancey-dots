@@ -15,7 +15,7 @@ $(document).ready(function() {
     //prepare the synths, fill buffer to play
 
     //mouse down, play your synth
-    $(document).mousedown(function(e){	
+    $(document).mousedown(function(e){
         pressed = true;
         sendMousePosition(e);
     });
@@ -23,7 +23,7 @@ $(document).ready(function() {
     //mouse up, stop playing your synth, and prepare the buffer
     $(document).mouseup(function(){
         //oscillator.noteOff(0);
-        //prepSynths();	
+        //prepSynths();
         pressed=false;
         socket.emit('silent',{state:"stop"});
     });
