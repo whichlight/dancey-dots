@@ -10,7 +10,6 @@ $(document).ready(function() {
     var col;
     var synths = {};
     var pressed;
-    var time=(new Date()).getTime();
 
     //prepare the synths, fill buffer to play
 
