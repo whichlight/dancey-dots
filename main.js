@@ -80,8 +80,6 @@ $(document).ready(function() {
             socket.emit('move', {
                 x: e.pageX,
                 y: e.pageY,
-                w: $(window).width(),
-                h: $(window).height()
 			});
         }
     }
