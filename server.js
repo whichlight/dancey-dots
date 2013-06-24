@@ -6,51 +6,40 @@ app.listen(8000);
 
 colors = {}
 
-function handler (req, res) {
-   var filePath = req.url;
-   if (filePath == '/')
+function handler(req, res) {
+    var filePath = req.url;
+    if (filePath == '/')
         filePath = '/index.html';
 
-  fs.readFile(__dirname + filePath,
-  function (err, data) {
-    if (err) {
-      res.writeHead(500);
-      return res.end('Error loading index.html');
-    }
-    res.writeHead(200);
-    res.end(data);
-  });
+    fs.readFile(__dirname + filePath, function (err, data) {
+        if (err) {
+            res.writeHead(500);
+            return res.end('Error loading index.html');
+        }
+        res.writeHead(200);
+        res.end(data);
+    });
 }
 
 io.sockets.on('connection', function (client) {
-  if(!colors[client.id]){
-	 col = hsvToRgb(Math.random(),1,1);
-	 colors[client.id]= 'rgb('+col[0]+','+col[1]+','+col[2]+')';
-
-  }
-		
-   client.on('move', function(message) {
-    message.id = client.id;
-	message.col=colors[client.id];	
-    console.log(client.id);
-
-    io.sockets.emit('move', message);
-
-  });
-
-  
-   client.on('silent',function(){
-	io.sockets.emit('silent',client.id);
-   });
-
-
-  client.on('disconnect', function(){
-   	io.sockets.emit('silent', client.id);
-	 io.sockets.emit('close', client.id);
-	 delete colors[client.id];
-  });
-
-
+    if(!colors[client.id]){
+        col = hsvToRgb(Math.random(),1,1);
+        colors[client.id]= 'rgb('+col[0]+','+col[1]+','+col[2]+')';
+    }
+    client.on('move', function(message) {
+        message.id = client.id;
+        message.col = colors[client.id];
+        console.log(client.id);
+        io.sockets.emit('move', message);
+    });
+    client.on('silent',function(){
+        io.sockets.emit('silent',client.id);
+    });
+    client.on('disconnect', function(){
+        io.sockets.emit('silent', client.id);
+        io.sockets.emit('close', client.id);
+        delete colors[client.id];
+    });
 });
 
 function hsvToRgb(h, s, v){
