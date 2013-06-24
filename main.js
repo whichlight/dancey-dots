@@ -2,7 +2,7 @@ function dot(data, context) {
     this.id = data.id;
     this.col = data.col;
 
-    var _x, _y, oscillator, filter, gainNode;
+    var _x, _y, oscillator;
 
     var $el = $(
         '<span class="synth" id="synth_'+data.id+'" style="background-color:'+this.col+';">'+
@@ -10,17 +10,19 @@ function dot(data, context) {
         '</span>');
     $('body').append($el);
 
-    function prep_synths() {
+    // oscillator -> filter -> gain -> context.destination
+    var filter = context.createBiquadFilter();
+    filter.type = 0;
+    var gain = context.createGainNode();
+    gain.gain.value = 0.05;
+
+    filter.connect(gain);
+    gain.connect(context.destination);
+
+    function prep_synths() { // have to re-make oscillator after each stop()
         oscillator = context.createOscillator();
         oscillator.type = 1;
-        filter = context.createBiquadFilter();
-        filter.type = 0;
-        gainNode = context.createGainNode();
-        gainNode.gain.value = 0.05;
-
         oscillator.connect(filter);
-        filter.connect(gainNode);
-        gainNode.connect(context.destination);
     }
     prep_synths();
 
