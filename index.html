@@ -67,10 +67,19 @@ see other projects at http://whichlight.com/
         <a href="http://www.whichlight.com">whichlight</a>
     </div>
 
+    <!-- TEMPLATES -->
+    <script id="dot" type="underscore/template">
+        <span class="synth" id="synth_<%=id%>" style="background-color: <%=col%>;">
+            <span class="chat" style="display:none;"/>
+        </span>
+    </script>
+
+    <!-- JAVASCRIPT -->
     <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
     <script src="jquery-1.9.1.min.js" type="text/javascript"></script>
     <script src="underscore-min.js" type="text/javascript"></script>
     <script src="/socket.io/socket.io.js" type="text/javascript"></script>
+    <script src="templates.js" type="text/javascript"></script>
     <script src="main.js" type="text/javascript"></script>
 </body>
 </html>

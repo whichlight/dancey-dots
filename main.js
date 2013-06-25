@@ -1,4 +1,5 @@
-function dot(data, context) {
+
+function dot(data, context, templates) {
     // setup //////////////////////////////////////////////////////////////////
     var that = this;
 
@@ -9,12 +10,8 @@ function dot(data, context) {
         t = 0, effects = {}, gain_init_value = 0.5;
 
     function initialize() {
-        $el = $(
-            '<span class="synth" id="synth_'+data.id+
-                '" style="background-color:'+this.col+';">'+
-                '<span class="chat" style="display:none;"/>'+
-            '</span>');
-        $('body').append($el);
+        $('body').append(templates.dot(data));
+        $el = $('body').find('#synth_'+data.id).first();
 
         // filter -> gain -> context.destination
         filter = context.createBiquadFilter();
@@ -86,12 +83,12 @@ function dot(data, context) {
             gain.gain.value = 0.01;
         },
         process: function() {
-            console.log('crescendo processor');
-            gain.gain.value *= 1.1;
-        },
+                     console.log('crescendo processor');
+                     gain.gain.value *= 1.1;
+                 },
         end: function() {
-            gain.gain.value = gain_init_value;
-        },
+                 gain.gain.value = gain_init_value;
+             },
         duration: 75,
     };
     effects.wobble = {
@@ -100,12 +97,12 @@ function dot(data, context) {
             gain.gain.value = gain_init_value;
         },
         process: function() {
-             console.log('wobble processor');
-            gain.gain.value = gain_init_value + 0.75 * Math.sin(t);
-        },
+                     console.log('wobble processor');
+                     gain.gain.value = gain_init_value + 0.75 * Math.sin(t);
+                 },
         end: function() {
-            gain.gain.value = gain_init_value;
-        },
+                 gain.gain.value = gain_init_value;
+             },
     };
 
     // handling processor effects /////////////////////////////////////////////
@@ -156,11 +153,12 @@ function dot(data, context) {
 $(document).ready(function() {
     try{
         var context = new webkitAudioContext(),
-	    _x, _y;
+_x, _y;
     }
     catch(err){
         alert("this uses the web audio API, try opening it in google chrome \n\n <3 whichlight" );
     }
+    var templates = prep_templates();
 
     var dots = {};
     var pressed = false;
@@ -180,7 +178,7 @@ $(document).ready(function() {
             socket.emit('move', {
                 x: e.pageX,
                 y: e.pageY,
-			});
+            });
         }
     }
 
@@ -202,7 +200,7 @@ $(document).ready(function() {
 
     socket.on('move', function (data) {
         if (!dots[data.id]) {
-            dots[data.id] = dot(data, context);
+            dots[data.id] = dot(data, context, templates);
         }
         dots[data.id].move(data);
     });
