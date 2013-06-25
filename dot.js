@@ -12,7 +12,7 @@ var dot_effects_display = {
         key: '3',
     },
     swell: {
-        description: '!',
+        description: 'swell',
         key: '4',
     },
 };
