@@ -71,9 +71,7 @@ function dot(data, context, templates) {
     effects.constant = {
         key_event: 48, // keyup ev.which for '0'
         start: function() {},
-        process: function() {
-            console.log('constant processor');
-        },
+        process: function() {},
         end: function() {},
     };
     effects.crescendo = {
@@ -82,12 +80,11 @@ function dot(data, context, templates) {
             gain.gain.value = 0.01;
         },
         process: function() {
-                     console.log('crescendo processor');
-                     gain.gain.value *= 1.1;
-                 },
+            gain.gain.value *= 1.1;
+        },
         end: function() {
-                 gain.gain.value = gain_init_value;
-             },
+            gain.gain.value = gain_init_value;
+        },
         duration: 75,
     };
     effects.wobble = {
@@ -96,17 +93,32 @@ function dot(data, context, templates) {
             gain.gain.value = gain_init_value;
         },
         process: function() {
-                     console.log('wobble processor');
-                     gain.gain.value = gain_init_value + 0.75 * Math.sin(t);
-                 },
+            gain.gain.value = gain_init_value + 0.75 * Math.sin(t);
+        },
         end: function() {
-                 gain.gain.value = gain_init_value;
-             },
+            gain.gain.value = gain_init_value;
+        },
+    };
+    effects.accent = {
+        key_event: 65, // 'a'
+        start: function() {
+            gain.gain.value = gain_init_value;
+        },
+        process: function() {
+            if (t < 25) {
+                gain.gain.value *= 1.2;
+            } else {
+                gain.gain.value *= 0.8;
+            }
+        },
+        end: function() {
+            gain.gain.value = gain_init_value;
+        },
+        duruation: 50,
     };
 
     // handling processor effects /////////////////////////////////////////////
     function transition_effects(o1, o2) {
-        console.log('transition effects');
         processor.onaudioprocess = effects.constant.processor;
         t = 0;
         o1.end();
@@ -133,7 +145,6 @@ function dot(data, context, templates) {
         });
         var current_effect = effects.constant;
         $(document).on('keyup', function(ev) {
-            console.log('keyup ev', ev.which);
             var new_effect = fxmap[ev.which];
             if (new_effect) {
                 transition_effects(current_effect, new_effect);
@@ -164,5 +175,9 @@ var dot_effects_display = {
     wobble: {
         description: 'wobble',
         key: 'w',
+    },
+    accent: {
+        description: '!',
+        key: 'a',
     },
 };

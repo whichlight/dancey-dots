@@ -52,16 +52,19 @@ see other projects at http://whichlight.com/
     </script>
 
     <script id="effects_legend" type="underscore/template">
-        <% _.each(effects, function(effect) { %>
-            <div class="effect">
-                <div class="effect-key">
-                    <%=effect.key%>
+        <div id="effects-legend" class="hide">
+            <% _.each(effects, function(effect) { %>
+                <div class="effect">
+                    <div class="effect-key">
+                        <%=effect.key%>
+                    </div>
+                    <div class="effect-description">
+                        <%=effect.description%>
+                    </div>
                 </div>
-                <div class="effect-description">
-                    <%=effect.description%>
-                </div>
-            </div>
-        <% }); %>
+            <% }); %>
+        </div>
+        <div id="effects-legend-shower"></div>
     </script>
 
     <!-- JAVASCRIPT -->
