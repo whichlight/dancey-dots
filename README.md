@@ -30,7 +30,10 @@ currently it scales to about five people, and then it lags.  I'm sure there are
 ways to optimize the synth and the message passing.  Thats what I plan on
 working on next, and any insights are welcome. 
 
+currently you hit spacebar to see the keyboard commands for different effects. this needs to be something more obvious.
 
 author
 ------
 Kawandeep Virdee, @kawantum , www.whichlight.com
+
+Noura forked this repo to add some effects.

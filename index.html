@@ -19,65 +19,60 @@ let me know what you think tweet me at @kawantum , or whichlight at gmail dot co
 see other projects at http://whichlight.com/  
 
 -->
-
     <meta charset="utf-8">
-
     <title>dancey-dots</title>
     <meta name="description" content="">
     <!-- Mobile viewport optimized: h5bp.com/viewport -->
     <meta name="viewport" content="width=device-width">
-	<style type="text/css">
-		#container{
-			font-family:helvetica;	
-			margin: 0px auto;
-			width:650px;
-		}
+    <link href="main.css" rel="stylesheet">
+    <script type="text/javascript">
+        var _gaq = _gaq || [];
+        _gaq.push(['_setAccount', 'UA-33819772-1']);
+        _gaq.push(['_trackPageview']);
 
-		.synth{
-			background-color:pink;
-    position: absolute;
-     height: 40px;
-    min-width: 40px;
-	border-radius:20px;
-	}
-	#info{
-	position: absolute;
-	    right: 10px;
-	    bottom: 10px;
-	    z-index: 2;
-	    padding: 16px 24px;
-	  color:grey;
-	  font-size:15px;
-	  font-family: helvetica;	
-
-	}
-	</style>
-
-<script type="text/javascript">
-
-  var _gaq = _gaq || [];
-  _gaq.push(['_setAccount', 'UA-33819772-1']);
-  _gaq.push(['_trackPageview']);
-
-  (function() {
-    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
-    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
-    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
-  })();
-
-</script>
-
-
+        (function() {
+            var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+            ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+            var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+        })();
+    </script>
 </head>
 <body>
+    <div id="info">
+        dancey-dots by
+        <a href="http://www.whichlight.com">whichlight</a>
+    </div>
+    <div id="effects-legend-container"></div>
 
+    <!-- TEMPLATES -->
+    <script id="dot" type="underscore/template">
+        <span class="synth" id="synth_<%=id%>" style="background-color: <%=col%>;">
+            <span class="chat" style="display:none;"/>
+        </span>
+    </script>
 
+    <script id="effects_legend" type="underscore/template">
+        <div id="effects-legend" class="hide">
+            <% _.each(effects, function(effect) { %>
+                <div class="effect">
+                    <div class="effect-key">
+                        <%=effect.key%>
+                    </div>
+                    <div class="effect-description">
+                        <%=effect.description%>
+                    </div>
+                </div>
+            <% }); %>
+        </div>
+        <div id="effects-legend-shower"></div>
+    </script>
 
-<div id="info">dancey-dots by <a href="http://www.whichlight.com">whichlight</a></div>
+    <!-- JAVASCRIPT -->
     <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
-    
-    <script src="main.js"></script>
-    <script type="text/javascript" src="/socket.io/socket.io.js"></script>
+    <script src="underscore-min.js" type="text/javascript"></script>
+    <script src="/socket.io/socket.io.js" type="text/javascript"></script>
+    <script src="templates.js" type="text/javascript"></script>
+    <script src="dot.js" type="text/javascript"></script>
+    <script src="main.js" type="text/javascript"></script>
 </body>
-
 </html>
