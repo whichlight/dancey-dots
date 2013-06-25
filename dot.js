@@ -140,8 +140,8 @@ function dot(data, context, templates) {
             gain.gain.value = gain_init_value;
         },
         process: function() {
-            if (t < 25) {
-                gain.gain.value *= 1.1;
+            if (t < 50) {
+                gain.gain.value *= 1.03;
             } else {
                 gain.gain.value = .7 * gain.gain.value + .3 * gain_init_value;
             }
@@ -149,7 +149,7 @@ function dot(data, context, templates) {
         end: function() {
             gain.gain.value = gain_init_value;
         },
-        duration: 50,
+        duration: 100,
     };
 
     // handling processor effects /////////////////////////////////////////////
