@@ -61,7 +61,7 @@ function dot(data, context, templates) {
         processor.onaudioprocess = effects.constant.processor;
         processor.connect(context.destination);
 
-        bind_keyup_events();
+        bind_key_events();
 
         // play
         that.move(data);
@@ -175,14 +175,14 @@ function dot(data, context, templates) {
     _.each(effects, function(o, name) {
         o.processor = make_processor(o);
     });
-    function bind_keyup_events() {
+    function bind_key_events() {
         var fxmap = {}; // map key code to effect object
         _.each(effects, function(o, name) {
             var key_character = dot_effects_display[name].key;
             var key_code = key_codes[key_character];
             fxmap[key_code] = o;
         });
-        $(document).on('keyup', function(ev) {
+        $(document).on('keydown', function(ev) {
             var new_effect = fxmap[ev.which];
             if (new_effect) {
                 transition_effects_to(new_effect);
