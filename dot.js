@@ -1,3 +1,30 @@
+// TODO it would be nice if dot_effects_display automatically matched the
+// effects defined for a dot, and it would be nice if each dot did not redefine
+// the same effects inside itself. we could have a globally defined dot_effects
+// that gave back functions that apply themselves using the dot's context
+var dot_effects_display = {
+    constant: {
+        description: 'no effects',
+        key: '1',
+    },
+    wobble: {
+        description: 'wobble',
+        key: '3',
+    },
+    swell: {
+        description: '!',
+        key: '4',
+    },
+};
+
+var key_numbers = {
+    1: 49,
+    2: 50,
+    3: 51,
+    4: 52,
+    5: 53,
+};
+
 function dot(data, context, templates) {
     // setup //////////////////////////////////////////////////////////////////
     var that = this;
@@ -69,26 +96,13 @@ function dot(data, context, templates) {
 
     // define processor effects here //////////////////////////////////////////
     effects.constant = {
-        key_event: 48, // keyup ev.which for '0'
+        key_event: key_numbers[dot_effects_display.constant.key],
         start: function() {},
         process: function() {},
         end: function() {},
     };
-    effects.crescendo = {
-        key_event: 67, // 'c'
-        start: function() {
-            gain.gain.value = 0.01;
-        },
-        process: function() {
-            gain.gain.value *= 1.1;
-        },
-        end: function() {
-            gain.gain.value = gain_init_value;
-        },
-        duration: 75,
-    };
     effects.wobble = {
-        key_event: 87, // 'w'
+        key_event: key_numbers[dot_effects_display.wobble.key],
         start: function() {
             gain.gain.value = gain_init_value;
         },
@@ -99,22 +113,22 @@ function dot(data, context, templates) {
             gain.gain.value = gain_init_value;
         },
     };
-    effects.accent = {
-        key_event: 65, // 'a'
+    effects.swell = {
+        key_event: key_numbers[dot_effects_display.swell.key],
         start: function() {
             gain.gain.value = gain_init_value;
         },
         process: function() {
             if (t < 25) {
-                gain.gain.value *= 1.2;
+                gain.gain.value *= 1.1;
             } else {
-                gain.gain.value *= 0.8;
+                gain.gain.value = .7 * gain.gain.value + .3 * gain_init_value;
             }
         },
         end: function() {
             gain.gain.value = gain_init_value;
         },
-        duruation: 50,
+        duration: 50,
     };
 
     // handling processor effects /////////////////////////////////////////////
@@ -159,25 +173,3 @@ function dot(data, context, templates) {
     return this;
 }
 
-// TODO it would be nice if dot_effects_display automatically matched the
-// effects defined for a dot, and it would be nice if each dot did not redefine
-// the same effects inside itself. we could have a globally defined dot_effects
-// that gave back functions that apply themselves using the dot's context
-var dot_effects_display = {
-    constant: {
-        description: 'no effects',
-        key: '0',
-    },
-    crescendo: {
-        description: 'crescendo',
-        key: 'c',
-    },
-    wobble: {
-        description: 'wobble',
-        key: 'w',
-    },
-    accent: {
-        description: '!',
-        key: 'a',
-    },
-};
