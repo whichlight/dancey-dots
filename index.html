@@ -25,7 +25,6 @@ see other projects at http://whichlight.com/
     <!-- Mobile viewport optimized: h5bp.com/viewport -->
     <meta name="viewport" content="width=device-width">
     <link href="main.css" rel="stylesheet">
-    <!--
     <script type="text/javascript">
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-33819772-1']);
@@ -36,7 +35,7 @@ see other projects at http://whichlight.com/
             ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
             var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
-    </script>-->
+    </script>
 </head>
 <body>
     <div id="info">
@@ -44,6 +43,7 @@ see other projects at http://whichlight.com/
         <a href="http://www.whichlight.com">whichlight</a>
     </div>
     <div id="effects-legend-container"></div>
+
     <!-- TEMPLATES -->
     <script id="dot" type="underscore/template">
         <span class="synth" id="synth_<%=id%>" style="background-color: <%=col%>;">
@@ -68,8 +68,7 @@ see other projects at http://whichlight.com/
     </script>
 
     <!-- JAVASCRIPT -->
-    <!--<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>-->
-    <script src="jquery-1.9.1.min.js" type="text/javascript"></script>
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
     <script src="underscore-min.js" type="text/javascript"></script>
     <script src="/socket.io/socket.io.js" type="text/javascript"></script>
     <script src="templates.js" type="text/javascript"></script>
