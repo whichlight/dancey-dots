@@ -7,6 +7,10 @@ var dot_effects_display = {
         description: 'no effects',
         key: '1',
     },
+    accent: {
+        description: '!',
+        key: '2',
+    },
     wobble: {
         description: 'wobble',
         key: '3',
@@ -100,6 +104,26 @@ function dot(data, context, templates) {
         process: function() {},
         end: function() {},
     };
+    effects.accent = {
+        start: function() {
+            gain.gain.value = gain_init_value;
+        },
+        process: function() {
+            if (t < 1) {
+                gain.gain.value = .1 * gain.gain.value + .9 * 2;
+                oscillator.frequency.value = 2.5 * _x;
+            } else if (t < 3) {
+                return;
+            } else {
+                gain.gain.value = .05 * gain.gain.value + .95 * gain_init_value;
+            }
+        },
+        end: function() {
+            gain.gain.value = gain_init_value;
+            oscillator.frequency.value = _x;
+        },
+        duration: 4,
+    },
     effects.wobble = {
         start: function() {
             gain.gain.value = gain_init_value;
@@ -129,12 +153,14 @@ function dot(data, context, templates) {
     };
 
     // handling processor effects /////////////////////////////////////////////
-    function transition_effects(o1, o2) {
+    var current_effect = effects.constant;
+    function transition_effects_to(new_effect) {
         processor.onaudioprocess = effects.constant.processor;
         t = 0;
-        o1.end();
-        o2.start();
-        processor.onaudioprocess = o2.processor;
+        current_effect.end();
+        new_effect.start();
+        current_effect = new_effect;
+        processor.onaudioprocess = new_effect.processor;
     }
     // each effect's processor does process() and knows when to end itself
     function make_processor(o) {
@@ -142,7 +168,7 @@ function dot(data, context, templates) {
             o.process();
             t += 1;
             if (o.duration && t >= o.duration) {
-                transition_effects(o, effects.constant);
+                transition_effects_to(effects.constant);
             }
         }
     }
@@ -156,12 +182,10 @@ function dot(data, context, templates) {
             var key_code = key_codes[key_character];
             fxmap[key_code] = o;
         });
-        var current_effect = effects.constant;
         $(document).on('keyup', function(ev) {
             var new_effect = fxmap[ev.which];
             if (new_effect) {
-                transition_effects(current_effect, new_effect);
-                current_effect = new_effect;
+                transition_effects_to(new_effect);
             }
         });
     }
