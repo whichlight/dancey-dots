@@ -35,4 +35,5 @@ currently you hit spacebar to see the keyboard commands for different effects. t
 author
 ------
 Kawandeep Virdee, @kawantum , www.whichlight.com
+
 Noura forked this repo to add some effects.
