@@ -17,8 +17,8 @@ var dot_effects_display = {
     },
 };
 
-var key_numbers = {
-    1: 49,
+var key_codes = {
+    1: 49, // the keyup event for hitting the '1' key has event.which = 49
     2: 50,
     3: 51,
     4: 52,
@@ -96,13 +96,11 @@ function dot(data, context, templates) {
 
     // define processor effects here //////////////////////////////////////////
     effects.constant = {
-        key_event: key_numbers[dot_effects_display.constant.key],
         start: function() {},
         process: function() {},
         end: function() {},
     };
     effects.wobble = {
-        key_event: key_numbers[dot_effects_display.wobble.key],
         start: function() {
             gain.gain.value = gain_init_value;
         },
@@ -114,7 +112,6 @@ function dot(data, context, templates) {
         },
     };
     effects.swell = {
-        key_event: key_numbers[dot_effects_display.swell.key],
         start: function() {
             gain.gain.value = gain_init_value;
         },
@@ -153,9 +150,11 @@ function dot(data, context, templates) {
         o.processor = make_processor(o);
     });
     function bind_keyup_events() {
-        var fxmap = {}; // map key event number to effect object
+        var fxmap = {}; // map key code to effect object
         _.each(effects, function(o, name) {
-            fxmap[o.key_event] = o;
+            var key_character = dot_effects_display[name].key;
+            var key_code = key_codes[key_character];
+            fxmap[key_code] = o;
         });
         var current_effect = effects.constant;
         $(document).on('keyup', function(ev) {
