@@ -148,3 +148,21 @@ function dot(data, context, templates) {
     return this;
 }
 
+// TODO it would be nice if dot_effects_display automatically matched the
+// effects defined for a dot, and it would be nice if each dot did not redefine
+// the same effects inside itself. we could have a globally defined dot_effects
+// that gave back functions that apply themselves using the dot's context
+var dot_effects_display = {
+    constant: {
+        description: 'no effects',
+        key: '0',
+    },
+    crescendo: {
+        description: 'crescendo',
+        key: 'c',
+    },
+    wobble: {
+        description: 'wobble',
+        key: 'w',
+    },
+};

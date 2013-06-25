@@ -7,6 +7,9 @@ _x, _y;
         alert("this uses the web audio API, try opening it in google chrome \n\n <3 whichlight" );
     }
     var templates = prep_templates();
+    $('#effects-legend-container').append(templates.effects_legend({
+        effects: dot_effects_display
+    }));
 
     var dots = {};
     var pressed = false;

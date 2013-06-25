@@ -24,30 +24,7 @@ see other projects at http://whichlight.com/
     <meta name="description" content="">
     <!-- Mobile viewport optimized: h5bp.com/viewport -->
     <meta name="viewport" content="width=device-width">
-    <style type="text/css">
-        #container{
-            font-family:helvetica;	
-            margin: 0px auto;
-            width:650px;
-		}
-        .synth{
-            background-color:pink;
-            position: absolute;
-            height: 40px;
-            min-width: 40px;
-            border-radius:20px;
-        }
-	    #info{
-            position: absolute;
-            right: 10px;
-            bottom: 10px;
-            z-index: 2;
-            padding: 16px 24px;
-            color:grey;
-            font-size:15px;
-            font-family: helvetica;
-        }
-    </style>
+    <link href="main.css" rel="stylesheet">
     <!--
     <script type="text/javascript">
         var _gaq = _gaq || [];
@@ -66,12 +43,25 @@ see other projects at http://whichlight.com/
         dancey-dots by
         <a href="http://www.whichlight.com">whichlight</a>
     </div>
-
+    <div id="effects-legend-container"></div>
     <!-- TEMPLATES -->
     <script id="dot" type="underscore/template">
         <span class="synth" id="synth_<%=id%>" style="background-color: <%=col%>;">
             <span class="chat" style="display:none;"/>
         </span>
+    </script>
+
+    <script id="effects_legend" type="underscore/template">
+        <% _.each(effects, function(effect) { %>
+            <div class="effect">
+                <div class="effect-key">
+                    <%=effect.key%>
+                </div>
+                <div class="effect-description">
+                    <%=effect.description%>
+                </div>
+            </div>
+        <% }); %>
     </script>
 
     <!-- JAVASCRIPT -->
