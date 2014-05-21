@@ -1,6 +1,6 @@
 {
-  "name": "synth_fun",
-  "subdomain": "whichlight.synth_fun",
+  "name": "danceydots",
+  "subdomain": "danceydots",
   "scripts": {
     "start": "server.js"
   },

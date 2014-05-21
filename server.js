@@ -28,17 +28,17 @@ io.sockets.on('connection', function (client) {
 	 colors[client.id]= 'rgb('+col[0]+','+col[1]+','+col[2]+')';
 
   }
-		
+
    client.on('move', function(message) {
     message.id = client.id;
-	message.col=colors[client.id];	
+	message.col=colors[client.id];
     console.log(client.id);
 
     io.sockets.emit('move', message);
 
   });
 
-  
+
    client.on('silent',function(){
 	io.sockets.emit('silent',client.id);
    });
