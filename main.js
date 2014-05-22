@@ -15,10 +15,6 @@ var checkFeatureSupport = function(){
   catch (err){
     alert('web audio not supported');
   }
-
-  if (!window.DeviceMotionEvent) {
-    alert("DeviveMotionEvent not supported");
-  }
 }
 
 
