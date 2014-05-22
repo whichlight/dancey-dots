@@ -78,13 +78,13 @@ var touchDeactivate = function(){
   socket.emit('silent',{state:"stop"});
 }
 
-
+//
 //socketio
 
 var socket = io.connect('http://'+window.location.hostname);
 
 function synthmap(x,y){
-  tx = 40*Math.pow(2,x*4);
+  tx = 40*Math.pow(2,x*5);
   ty = 100*Math.pow(2,(1-y)*6);
   return [tx,ty]
 }
@@ -121,10 +121,7 @@ socket.on('silent',function(id){
   });
 
   console.log(id);
-  if(synths[id][0].playbackState>1){
-    synths[id][0].stop(0);
-  }
-  synths[id]=prepSynths();
+  synths[id][2].gain.value=0;
 });
 
 socket.on('move', function (data) {

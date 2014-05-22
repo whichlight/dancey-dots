@@ -4,11 +4,15 @@
   "scripts": {
     "start": "server.js"
   },
-  "version": "0.0.0-9",
+  "version": "0.0.0-10",
   "engines": {
     "node": "0.6.x"
   },
   "dependencies": {
     "socket.io": "~0.9.16"
-  }
+  },
+  "domains":[
+    "bloopdance.com",
+    "www.bloopdance.com"
+  ]
 }
