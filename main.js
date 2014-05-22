@@ -69,7 +69,9 @@ var touchActivate = function(event){
     col:col,
     id:client_id,
   }
-  sendData(data);
+  if(typeof client_id != "undefined"){
+    socket.emit('move', data);
+  }
   playSynth(data);
 }
 
