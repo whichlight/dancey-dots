@@ -74,6 +74,7 @@ var touchActivate = function(event){
 var touchDeactivate = function(){
   pressed=false;
   socket.emit('silent',{state:"stop"});
+  synths[client_id][2].gain.value=0;
 }
 
 //
