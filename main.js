@@ -75,6 +75,11 @@ var touchDeactivate = function(){
   pressed=false;
   socket.emit('silent',{state:"stop"});
   synths[client_id][2].gain.value=0;
+  $('#synth_'+id).css({
+    'opacity' : '0.2'
+  });
+
+
 }
 
 //
