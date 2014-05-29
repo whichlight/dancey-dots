@@ -30,7 +30,7 @@ io.sockets.on('connection', function (client) {
   });
 
    client.on('silent',function(){
-	io.sockets.broadcast.emit('silent',client.id);
+	client.broadcast.emit('silent',client.id);
    });
 
    client.on('disconnect', function(){
