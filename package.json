@@ -4,7 +4,7 @@
   "scripts": {
     "start": "server.js"
   },
-  "version": "0.0.0-16",
+  "version": "0.0.0-18",
   "engines": {
     "node": "0.6.x"
   },
@@ -12,8 +12,6 @@
     "socket.io": "~0.9.16"
   },
   "domains": [
-    "bloopdance.com",
-    "www.bloopdance.com",
     "danceydots.com",
     "www.danceydots.com"
   ]
