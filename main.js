@@ -48,7 +48,7 @@ $(document).ready(function() {
     .on('release', function(event){
       touchDeactivate();
     });
-    });
+});
 
 
 var touchActivate = function(event){
@@ -78,7 +78,7 @@ var touchDeactivate = function(){
   $('#synth_'+id).css({
     'opacity' : '0.2'
   });
-
+  
 
 }
 
@@ -155,7 +155,8 @@ var playSynth = function(data){
       synths[data.id][0].frequency.value=_x;
       synths[data.id][1].frequency.value=_y;
       synths[data.id][2].gain.value=(0.2+data.y/3);
-      if(synths[data.id][0].playbackState==0){
+      if(!synths[data.id][3]){
+       synths[data.id][3] = true;
        synths[data.id][0].start(0);
       }
     }
@@ -166,7 +167,7 @@ var playSynth = function(data){
 socket.on('close', function (id) {
   console.log('disconnect ' + id);
   if(id in synths){
-    if(synths[id][0].playbackState>1){
+    if(synths[id][3]){
       synths[id][0].stop(0);
       synths[id][0].disconnect(0);
     }
@@ -202,7 +203,8 @@ function prepSynths(){
   oscillator.connect(filter);
   filter.connect(gainNode);
   gainNode.connect(context.destination);
-  return [oscillator, filter, gainNode]
+  var started = false;
+  return [oscillator, filter, gainNode, started];
 }
 
 function hsvToRgb(h, s, v){
