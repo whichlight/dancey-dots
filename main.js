@@ -189,11 +189,11 @@ function sendData(data) {
 function prepSynths(){
   var oscillator = context.createOscillator(); //need perens here
   oscillator.type=1;
-  oscillator.frequency.value=_x;
+  oscillator.frequency.value=_x || 0;
   //filter
   var filter = context.createBiquadFilter();
   filter.type=0;
-  filter.frequency.value=_y;
+  filter.frequency.value=_y || 0;
 
   //volume
   var gainNode = context.createGain();
