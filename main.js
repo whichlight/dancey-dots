@@ -11,29 +11,36 @@ var checkFeatureSupport = function(){
   try{
     window.AudioContext = window.AudioContext||window.webkitAudioContext;
     context = new AudioContext();
+
+    var iOS = ( navigator.userAgent.match(/(iPad|iPhone|iPod)/g) ? true : false );
+    if (iOS) {
+        $("#fun").prepend("<p id='initialize'>tap to initialize</p>");
+        window.addEventListener('touchend', function() {
+            var buffer = context.createBuffer(1, 1, 22050);
+            var source = context.createBufferSource();
+            source.buffer = buffer;
+            source.connect(context.destination);
+            source.start(0);
+            $("#initialize").remove();
+        }, false);
+    }
+
+
   }
   catch (err){
-    alert('web audio not supported');
+    alert("this uses the web audio API, try opening it in google chrome \n\n <3 whichlight" );
   }
 }
 
 
 
 $(document).ready(function() {
-  try{
-    window.AudioContext = window.AudioContext||window.webkitAudioContext;
-    var context = new AudioContext();
-  }
-  catch(err){
-    alert("this uses the web audio API, try opening it in google chrome \n\n <3 whichlight" );
-  }
-
-//  alert("Turn the volume up and touch the screen. Share the URL with a friend to hear their sounds. Let's have a wild synth party! \n\n <3 @whichlight");
+  checkFeatureSupport();
+  alert("Turn the volume up and touch the screen. Share the URL with a friend to hear their sounds. Let's have a wild synth party! \n\n <3 @whichlight");
 
   var color = hsvToRgb(Math.random(),1,1);
   col = 'rgb(' + color.join(',') + ')';
 
-    checkFeatureSupport();
     $fun = document.getElementById("fun");
     hammertime = Hammer($fun, {
       prevent_default: true,
@@ -78,7 +85,7 @@ var touchDeactivate = function(){
   $('#synth_'+client_id).css({
     'opacity' : '0.2'
   });
-  
+
 
 }
 
@@ -188,11 +195,11 @@ function sendData(data) {
 
 function prepSynths(){
   var oscillator = context.createOscillator(); //need perens here
-  oscillator.type=1;
+  oscillator.type="square";
   oscillator.frequency.value=_x || 0;
   //filter
   var filter = context.createBiquadFilter();
-  filter.type=0;
+  filter.type="lowpass";
   filter.frequency.value=_y || 0;
 
   //volume
