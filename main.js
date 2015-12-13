@@ -187,18 +187,16 @@ var playSynth = function(data){
 
   var synth = synths[data.id];
   if(synth){
-    if(synth.oscillator && synth.filter){
-      synth.oscillator.frequency.value=_x;
-      synth.filter.frequency.value=_y;
-      synth.gainNode.gain.value=(0.2+data.y/3);
-    if(!synth.started){
-       synth.started = true;
-       synth.oscillator.start(0);
-      }
-    }
+    synth.oscillator.frequency.value=_x;
+    synth.filter.frequency.value=_y;
+    synth.gainNode.gain.value=(0.2+data.y/3);
+  if(!synth.started){
+     synth.started = true;
+     synth.oscillator.start(0);
   }
 
 }
+};
 
 socket.on('close', function (id) {
   console.log('disconnect ' + id);
