@@ -184,14 +184,16 @@ var playSynth = function(data){
   var n = synthmap(data.x,data.y);
   _x=n[0];
   _y=n[1];
-  if(synths[data.id]){
-    if(synths[data.id].oscillator && synths[data.id].filter){
-      synths[data.id].oscillator.frequency.value=_x;
-      synths[data.id].filter.frequency.value=_y;
-      synths[data.id].gainNode.gain.value=(0.2+data.y/3);
-    if(!synths[data.id].started){
-       synths[data.id].started = true;
-       synths[data.id].oscillator.start(0);
+
+  var synth = synths[data.id];
+  if(synth){
+    if(synth.oscillator && synth.filter){
+      synth.oscillator.frequency.value=_x;
+      synth.filter.frequency.value=_y;
+      synth.gainNode.gain.value=(0.2+data.y/3);
+    if(!synth.started){
+       synth.started = true;
+       synth.oscillator.start(0);
       }
     }
   }
