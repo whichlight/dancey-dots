@@ -57,6 +57,32 @@ $(document).ready(function() {
     });
 });
 
+// calls fun at most once every ms.
+function throttle(ms, fun){
+    var then = performance.now(),
+        that = this,
+        lastArgs = null,
+        timeout = null;
+
+    return function(){
+        var now = performance.now(),
+            args = Array.prototype.slice.apply(arguments);
+        if(now - then > ms){
+            fun.apply(that, args);
+            then = now;
+            // TODO: clear the timeout here?
+        } else {
+            // if it hasn't been long enough, schedule the most recent function
+            // call to fire after `ms` have passed.
+            lastArgs = args;
+            timeout && window.clearTimeout(timeout);
+            timeout = window.setTimeout(function(){
+                fun.apply(that, args);
+            }, ms);
+        }
+    };
+}
+
 
 var touchActivate = function(event){
   pressed= true;
@@ -93,6 +119,7 @@ var touchDeactivate = function(){
 //socketio
 
 var socket = io.connect('http://'+window.location.hostname);
+socket.emit = throttle.call(socket, 100, socket.emit);
 
 function synthmap(x,y){
   tx = 40*Math.pow(2,x*5);
