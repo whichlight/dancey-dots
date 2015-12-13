@@ -107,7 +107,7 @@ var touchActivate = function(event){
 var touchDeactivate = function(){
   pressed=false;
   socket.emit('silent',{state:"stop"});
-  synths[client_id][2].gain.value=0;
+  synths[client_id].gainNode.gain.value=0;
   $('#synth_'+client_id).css({
     'opacity' : '0.2'
   });
@@ -159,7 +159,7 @@ socket.on('silent',function(id){
   });
 
   console.log(id);
-  synths[id][2].gain.value=0;
+  synths[id].gainNode.gain.value=0;
 });
 
 socket.on('move', function (data) {
@@ -185,13 +185,13 @@ var playSynth = function(data){
   _x=n[0];
   _y=n[1];
   if(synths[data.id]){
-    if(synths[data.id][0] && synths[data.id][1]){
-      synths[data.id][0].frequency.value=_x;
-      synths[data.id][1].frequency.value=_y;
-      synths[data.id][2].gain.value=(0.2+data.y/3);
-      if(!synths[data.id][3]){
-       synths[data.id][3] = true;
-       synths[data.id][0].start(0);
+    if(synths[data.id].oscillator && synths[data.id].filter){
+      synths[data.id].oscillator.frequency.value=_x;
+      synths[data.id].filter.frequency.value=_y;
+      synths[data.id].gainNode.gain.value=(0.2+data.y/3);
+    if(!synths[data.id].started){
+       synths[data.id].started = true;
+       synths[data.id].oscillator.start(0);
       }
     }
   }
@@ -238,7 +238,12 @@ function prepSynths(){
   filter.connect(gainNode);
   gainNode.connect(context.destination);
   var started = false;
-  return [oscillator, filter, gainNode, started];
+  return {
+      oscillator: oscillator,
+      filter: filter,
+      gainNode: gainNode,
+      started: started
+  };
 }
 
 function hsvToRgb(h, s, v){
