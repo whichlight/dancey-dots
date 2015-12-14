@@ -40,6 +40,7 @@ var checkFeatureSupport = function(){
 // updates synth location, pitch & filter frequency on every animation
 // frame. this is the only place that synth.coords is written to.
 function updateSynths(){
+    window.requestAnimationFrame(updateSynths);
     for (var cid in synths){
         var synth = synths[cid],
             coef = SMOOTHING_COEFFICIENT,
@@ -82,7 +83,6 @@ function updateSynths(){
         });
 
     }
-    window.requestAnimationFrame(updateSynths);
 }
 
 $(document).ready(function() {
