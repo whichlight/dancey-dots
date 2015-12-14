@@ -47,8 +47,8 @@ function updateSynths(){
 
         if(!synth.playing) {
             synth.gainNode.gain.value=0;
-            synths[client_id].coords.x = synths[client_id].coords.y = null;
-            $('#synth_'+client_id).css({
+            synths[cid].coords.x = synths[cid].coords.y = null;
+            $('#synth_'+cid).css({
                 'opacity' : '0.2'
             });
             continue;
@@ -77,7 +77,7 @@ function updateSynths(){
         $('#synth_'+cid).css({
             'left' : (synth.coords.x*$(window).width()-20) + 'px',
             'top' : synth.coords.y*$(window).height()-20 + 'px',
-            'background-color': col,
+            'background-color': synth.color,
             'opacity' : '0.7'
         });
 
