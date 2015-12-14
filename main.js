@@ -230,9 +230,9 @@ var playSynth = function(data){
 socket.on('close', function (id) {
   console.log('disconnect ' + id);
   if(id in synths){
-    if(synths[id][3]){
-      synths[id][0].stop(0);
-      synths[id][0].disconnect(0);
+    if(synths[id].started){
+        synths[id].oscillator.stop(0);
+        synths[id].oscillator.disconnect(0);
     }
   }
   $('#synth_'+id).remove();
