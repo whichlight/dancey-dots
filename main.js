@@ -6,6 +6,11 @@ var pressed;
 var time=(new Date()).getTime();
 var client_id;
 
+var THROTTLE_MS = 50,  // only emit on socket once per this many ms
+
+    // the smaller the coeff the more the ball lags behind the mouse. the higher
+    // it is the jumpier throttled move messages will appear.
+    SMOOTHING_COEFFICIENT = 0.3;
 
 var checkFeatureSupport = function(){
   try{
@@ -32,7 +37,53 @@ var checkFeatureSupport = function(){
   }
 }
 
+// updates synth location, pitch & filter frequency on every animation
+// frame. this is the only place that synth.coords is written to.
+function updateSynths(){
+    for (var cid in synths){
+        var synth = synths[cid],
+            coef = SMOOTHING_COEFFICIENT,
+            synthArgs;
 
+        if(!synth.playing) {
+            synth.gainNode.gain.value=0;
+            synths[client_id].coords.x = synths[client_id].coords.y = null;
+            $('#synth_'+client_id).css({
+                'opacity' : '0.2'
+            });
+            continue;
+        }
+
+        if(!synth.started){
+            synth.started = true;
+            synth.oscillator.start(0);
+        }
+
+        // if coords are null, set them to synth.dest. this prevents the synth
+        // blob from sliding to a note on mouse down. it just instantly appears
+        // there.
+        synth.coords.x = synth.coords.x == null ? synth.dest.x : synth.coords.x;
+        synth.coords.y = synth.coords.y == null ? synth.dest.y : synth.coords.y;
+
+        // simple exponential smoothing
+        synth.coords.x = synth.dest.x * coef + (1 - coef) * synth.coords.x;
+        synth.coords.y = synth.dest.y * coef + (1 - coef) * synth.coords.y;
+
+        synthArgs = synthmap(synth.coords.x, synth.coords.y);
+        synth.oscillator.frequency.value = synthArgs[0];
+        synth.filter.frequency.value = synthArgs[1];
+        synth.gainNode.gain.value=(0.2+synth.coords.y/3);
+
+        $('#synth_'+cid).css({
+            'left' : (synth.coords.x*$(window).width()-20) + 'px',
+            'top' : synth.coords.y*$(window).height()-20 + 'px',
+            'background-color': col,
+            'opacity' : '0.7'
+        });
+
+    }
+    window.requestAnimationFrame(updateSynths);
+}
 
 $(document).ready(function() {
   checkFeatureSupport();
@@ -55,6 +106,7 @@ $(document).ready(function() {
     .on('release', function(event){
       touchDeactivate();
     });
+    updateSynths();
 });
 
 // calls fun at most once every ms.
@@ -107,19 +159,14 @@ var touchActivate = function(event){
 var touchDeactivate = function(){
   pressed=false;
   socket.emit('silent',{state:"stop"});
-  synths[client_id].gainNode.gain.value=0;
-  $('#synth_'+client_id).css({
-    'opacity' : '0.2'
-  });
-
-
+  synths[client_id].playing = false;
 }
 
 //
 //socketio
 
 var socket = io.connect('http://'+window.location.hostname);
-socket.emit = throttle.call(socket, 100, socket.emit);
+socket.emit = throttle.call(socket, THROTTLE_MS, socket.emit);
 
 function synthmap(x,y){
   tx = 40*Math.pow(2,x*5);
@@ -154,12 +201,8 @@ socket.on('connect',function(){
 });
 
 socket.on('silent',function(id){
-  $('#synth_'+id).css({
-    'opacity' : '0.2'
-  });
-
   console.log(id);
-  synths[id].gainNode.gain.value=0;
+  synths[id].playing = false;
 });
 
 socket.on('move', function (data) {
@@ -171,31 +214,17 @@ var playSynth = function(data){
     $('body').append('<span class="synth" id="synth_'+data['id']+'"><span style="display:none;" class="chat"/></span>');
   }
 
-  $('#synth_'+data['id']).css({
-    'left' : (data['x']*$(window).width()-20) + 'px',
-    'top' : data['y']*$(window).height()-20 + 'px',
-    'background-color': data['col'],
-    'opacity' : '0.7'
-  });
-
   if(!synths[data.id] && typeof data.id != "undefined"){
     synths[data.id]=prepSynths();
   }
-  var n = synthmap(data.x,data.y);
-  _x=n[0];
-  _y=n[1];
 
   var synth = synths[data.id];
   if(synth){
-    synth.oscillator.frequency.value=_x;
-    synth.filter.frequency.value=_y;
-    synth.gainNode.gain.value=(0.2+data.y/3);
-  if(!synth.started){
-     synth.started = true;
-     synth.oscillator.start(0);
+      synth.dest.x = data.x;
+      synth.dest.y = data.y;
+      synth.color = data.col;
+      synth.playing = true;
   }
-
-}
 };
 
 socket.on('close', function (id) {
@@ -237,12 +266,23 @@ function prepSynths(){
   oscillator.connect(filter);
   filter.connect(gainNode);
   gainNode.connect(context.destination);
-  var started = false;
+
   return {
+      started: false,
+      playing: false,  // false on touchDeactivate
+
+      // dest contains the destination coordinates the server gave us for this
+      // node. these are updated by use interaction / move messages from server.
+      dest: {x: 0, y: 0},
+
+      // coords contains the current on-screen location of the node. these
+      // coordinates transition smoothly between the coords in .dest
+      coords: {x: null, y: null},
+
+      color: null,
       oscillator: oscillator,
       filter: filter,
-      gainNode: gainNode,
-      started: started
+      gainNode: gainNode
   };
 }
 
