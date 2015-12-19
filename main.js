@@ -119,15 +119,16 @@ function throttle(ms, fun){
     return function(){
         var now = performance.now(),
             args = Array.prototype.slice.apply(arguments);
+
+        if(timeout) window.clearTimeout(timeout);
+
         if(now - then > ms){
             fun.apply(that, args);
             then = now;
-            // TODO: clear the timeout here?
         } else {
             // if it hasn't been long enough, schedule the most recent function
             // call to fire after `ms` have passed.
             lastArgs = args;
-            timeout && window.clearTimeout(timeout);
             timeout = window.setTimeout(function(){
                 fun.apply(that, args);
             }, ms);
