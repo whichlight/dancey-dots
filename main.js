@@ -10,7 +10,7 @@ var THROTTLE_MS = 50,  // only emit on socket once per this many ms
 
     // the smaller the coeff the more the ball lags behind the mouse. the higher
     // it is the jumpier throttled move messages will appear.
-    SMOOTHING_COEFFICIENT = 0.3;
+    SMOOTHING_COEFFICIENT = 0.3; // valid values: (0-1]
 
 var checkFeatureSupport = function(){
   try{
