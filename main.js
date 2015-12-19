@@ -109,7 +109,10 @@ $(document).ready(function() {
     updateSynths();
 });
 
-// calls fun at most once every ms.
+// Returns a version of `fun` that will only run once very `ms` milliseconds, no
+// matter how often it's called. Function invocations f1, f2, f3, f4 all
+// occuring within a timespan less than `ms`, will result in f1 and f4 being
+// called, at time 0 and time `ms`, respectively.
 function throttle(ms, fun){
     var then = performance.now(),
         that = this,
