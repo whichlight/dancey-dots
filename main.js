@@ -127,11 +127,12 @@ function throttle(ms, fun){
             then = now;
         } else {
             // if it hasn't been long enough, schedule the most recent function
-            // call to fire after `ms` have passed.
+            // call to fire after `ms` have passed since the last successful
+            // function call.
             lastArgs = args;
             timeout = window.setTimeout(function(){
                 fun.apply(that, args);
-            }, ms);
+            }, ms - (now - then));
         }
     };
 }
