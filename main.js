@@ -10,7 +10,7 @@ var THROTTLE_MS = 50,  // only emit on socket once per this many ms
 
     // the smaller the coeff the more the ball lags behind the mouse. the higher
     // it is the jumpier throttled move messages will appear.
-    SMOOTHING_COEFFICIENT = 0.3;
+    SMOOTHING_COEFFICIENT = 0.3; // valid values: (0-1]
 
 var checkFeatureSupport = function(){
   try{
@@ -109,7 +109,10 @@ $(document).ready(function() {
     updateSynths();
 });
 
-// calls fun at most once every ms.
+// Returns a version of `fun` that will only run once very `ms` milliseconds, no
+// matter how often it's called. Function invocations f1, f2, f3, f4 all
+// occuring within a timespan less than `ms`, will result in f1 and f4 being
+// called, at time 0 and time `ms`, respectively.
 function throttle(ms, fun){
     var then = performance.now(),
         that = this,
@@ -119,18 +122,20 @@ function throttle(ms, fun){
     return function(){
         var now = performance.now(),
             args = Array.prototype.slice.apply(arguments);
+
+        if(timeout) window.clearTimeout(timeout);
+
         if(now - then > ms){
             fun.apply(that, args);
             then = now;
-            // TODO: clear the timeout here?
         } else {
             // if it hasn't been long enough, schedule the most recent function
-            // call to fire after `ms` have passed.
+            // call to fire after `ms` have passed since the last successful
+            // function call.
             lastArgs = args;
-            timeout && window.clearTimeout(timeout);
             timeout = window.setTimeout(function(){
                 fun.apply(that, args);
-            }, ms);
+            }, ms - (now - then));
         }
     };
 }
